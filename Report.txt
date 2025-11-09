@@ -1,0 +1,54 @@
+Analytical Report: Analysis on Health Care Dataset
+
+Date: 9th November 2025
+Roll: 447408
+Technologies Used: Python, NumPy, Pandas, Matplotlib, Seaborn
+
+1. Introduction & Objective
+This report summarizes the initial data analysis, cleaning, and preparation of the "Stroke Prediction Dataset." The primary objective of the assignment is to analyze this healthcare data to extract meaningful insights, identify relationships between features, and understand the factors contributing to stroke risk. This report details the foundational data processing steps taken to create a clean and reliable dataset suitable for in-depth visual and statistical analysis.
+
+2. Data Loading and Initial Inspection:
+The dataset (healthcare-dataset-stroke-data.csv) was successfully loaded into a Pandas DataFrame. The initial inspection revealed the following structure:
+Dimensions: 5,110 entries and 12 columns.
+Features: A mix of numerical (id, age, hypertension, heart_disease, avg_glucose_level, bmi, stroke) and categorical (gender, ever_married, work_type, Residence_type, smoking_status) data.
+Missing Data: The bmi (Body Mass Index) column was identified as the only feature with missing values, with 201 null entries (approximately 3.93% of the data).
+Data Types: The age column was identified as a float64 type and was later converted to int64 for more appropriate analysis.
+Target Variable: The stroke column, our target for analysis, showed a significant class imbalance, with only 4.87% of the initial dataset having experienced a stroke.
+
+3. Data Cleaning and Preprocessing
+A multi-step data cleaning process was executed to ensure data quality and integrity.
+Duplicate Removal: A check for duplicate entries and duplicate id values was performed. No duplicate records were found.
+
+Handling Missing 'bmi' Data:
+A histogram (Cell 55) confirmed that the bmi data was heavily right-skewed, indicating that the mean would not be a reliable measure for imputation.
+Consequently, the 201 missing bmi values were imputed using the dataset's median BMI (28.1). This approach is robust to outliers and appropriate for skewed distributions.
+
+Outlier Removal ('bmi'):
+Following imputation, the bmi column was further processed to handle extreme outliers.
+The Interquartile Range (IQR) method was applied. The 1st quartile (Q1) was 23.8 and the 3rd quartile (Q3) was 32.4.
+Records with a bmi outside the 1.5 * IQR range (below 10.9 or above 45.3) were removed. This step normalized the bmi distribution, making it more symmetrical (as shown in Cell 58).
+
+Data Integrity ('age' & 'gender'):
+Age: 43 records were identified where age was listed as 0. These were deemed implausible for an adult-focused stroke dataset and were dropped.
+Gender: The dataset contained three unique 'gender' values: 'Male', 'Female', and 'Other'. The single record corresponding to 'Other' was removed to standardize the feature. (Note: This row was likely removed during the BMI outlier drop).
+
+4. Feature Engineering
+To facilitate clearer categorical analysis and visualization, three new columns were created by mapping the binary numerical data to descriptive string values:
+is_hypertension ('Yes'/'No')
+is_heart_disease ('Yes'/'No')
+is_stroke ('Yes'/'No')
+
+5. Summary of Findings & Dataset Characteristics
+After the complete cleaning and preprocessing pipeline, the final dataset for analysis consists of 4,941 records and 15 columns (including the 3 new engineered features).
+The primary "findings" from this preparatory phase relate to the key characteristics of the cleaned data:
+Significant Class Imbalance: The dataset remains highly imbalanced. The target variable, stroke, is a rare event, occurring in only ~5% of the cleaned patient records. This is a critical finding that must be addressed in any future predictive modeling (e.g., by using techniques like SMOTE or adjusting class weights).
+
+Biometric Skewness:
+The avg_glucose_level distribution remains strongly right-skewed (as seen in Cell 71 & 88), even after other cleaning. This was an intentional choice, as these high-glucose "outliers" represent a critical, at-risk patient population and are not data errors.
+The bmi distribution is now relatively symmetrical, with a mean of 28.25.
+Risk Factor Prevalence: In this sample, known risk factors are a minority:
+Hypertension: ~10% of patients.
+Heart Disease: ~6% of patients.
+
+6. Next Steps & Conclusion
+The data has been successfully loaded, inspected, and cleaned. Implausible records have been removed, missing values handled, and key features engineered. The dataset is now prepared for the next phase of the assignment: in-depth exploratory data analysis (EDA) and visualization to identify the relationships between features (e.g., age, bmi, avg_glucose_level, smoking_status) and the likelihood of a stroke.
